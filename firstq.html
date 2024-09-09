@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Book List and Signup</title>
+    <style>
+     
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #signup-form {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        form label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        form button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fictional Book List</h1>
+        
+        <div class="controls">
+            <select id="filter-genre">
+                <option value="">All Genres</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Science Fiction">Science Fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Mystery">Mystery</option>
+            </select>
+
+            <div>
+                <button id="sort-title">Sort by Title</button>
+                <button id="sort-author">Sort by Author</button>
+            </div>
+        </div>
+        
+        <div id="book-list" class="book-list"></div>
+        
+        <div id="pagination" class="pagination"></div>
+
+        <div id="error-message" class="error-message"></div>
+
+
+        <div id="signup-form">
+            <h2>Sign Up to Access More Features</h2>
+            <form id="registerForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookList = document.getElementById('book-list');
+            const errorMessage = document.getElementById('error-message');
+            const filterGenre = document.getElementById('filter-genre');
+            const sortTitleButton = document.getElementById('sort-title');
+            const sortAuthorButton = document.getElementById('sort-author');
+            const pagination = document.getElementById('pagination');
+            const registerForm = document.getElementById('registerForm');
+
+            // Embedded JSON Data
+            const books = [
+                { "title": "The Great Adventure", "author": "John Smith", "genre": "Fiction" },
+                { "title": "Mystery of the Lost City", "author": "Jane Doe", "genre": "Mystery" },
+                { "title": "Journey to the Stars", "author": "Alice Johnson", "genre": "Science Fiction" },
+                { "title": "The Fantasy Realm", "author": "Bob Williams", "genre": "Fantasy" },
+                { "title": "Secrets of the Universe", "author": "Cathy Brown", "genre": "Science Fiction" },
+                { "title": "Into the Unknown", "author": "Tom Clark", "genre": "Science Fiction" },
+                { "title": "The Hidden World", "author": "Emily Davis", "genre": "Fantasy" },
+                { "title": "Enigma of the Ancient", "author": "Michael Lee", "genre": "Mystery" },
+                { "title": "The Last Horizon", "author": "Sarah Miller", "genre": "Fiction" },
+                { "title": "Chronicles of Magic", "author": "David Wilson", "genre": "Fantasy" },
+                { "title": "Galactic Odyssey", "author": "Laura Martinez", "genre": "Science Fiction" },
+                { "title": "The Enchanted Forest", "author": "Chris Anderson", "genre": "Fantasy" },
+                { "title": "Lost in Time", "author": "Jessica Robinson", "genre": "Science Fiction" },
+                { "title": "The Secret Keeper", "author": "Daniel White", "genre": "Mystery" },
+                { "title": "Echoes of the Past", "author": "Nancy Lewis", "genre": "Mystery" }
+            ];
+
+            let currentPage = 1;
+            const booksPerPage = 5;
+
+            function displayBooks() {
+                bookList.innerHTML = '';
+                const filteredBooks = filterBooks();
+                const sortedBooks = sortBooks(filteredBooks);
+                const paginatedBooks = paginateBooks(sortedBooks);
+
+                paginatedBooks.forEach(book => {
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                        <h3>${book.title}</h3>
+                        <p>Author: ${book.author}</p>
+                        <p>Genre: ${book.genre}</p>
+                    `;
+                    bookList.appendChild(bookItem);
+                });
+            }
+
+            function filterBooks() {
+                const selectedGenre = filterGenre.value;
+                if (selectedGenre === '') {
+                    return books;
+                }
+                return books.filter(book => book.genre === selectedGenre);
+            }
+
+            function sortBooks(filteredBooks) {
+                if (sortTitleButton.classList.contains('active')) {
+                    return filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+                } else if (sortAuthorButton.classList.contains('active')) {
+                    return filteredBooks.sort((a, b) => a.author.localeCompare(b.author));
+                }
+                return filteredBooks;
+            }
+
+            function paginateBooks(sortedBooks) {
+                const startIndex = (currentPage - 1) * booksPerPage;
+                const endIndex = startIndex + booksPerPage;
+                return sortedBooks.slice(startIndex, endIndex);
+            }
+            function createPagination() {
+                pagination.innerHTML = '';
+
+                const totalPages = Math.ceil(books.length / booksPerPage);
+
+                const createButton = (text, className, clickHandler) => {
+                    const button = document.createElement('button');
+                    button.textContent = text;
+                    button.className = className;
+                    button.addEventListener('click', clickHandler);
+                    pagination.appendChild(button);
+                };
+
+                createButton('First', 'pagination-button', () => {
+                    currentPage = 1;
+                    updatePagination();
+                });
+                createButton('Previous', `pagination-button ${currentPage === 1 ? 'disabled' : ''}`, () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                    }
+                });
+
+                for (let i = 1; i <= totalPages; i++) {
+                    createButton(i, `pagination-button ${i === currentPage ? 'active' : ''}`, () => {
+                        currentPage = i;
+                        updatePagination();
+                    });
+                }
+
+                createButton('Next', `pagination-button ${currentPage === totalPages ? 'disabled' : ''}`, () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                    }
+                });
+
+                
+                createButton('Last', 'pagination-button', () => {
+                    currentPage = totalPages;
+                    updatePagination();
+                });
+            }
+
+            function updatePagination() {
+                displayBooks();
+                createPagination();
+            }
+
+            filterGenre.addEventListener('change', () => {
+                currentPage = 1;
+                updatePagination();
+            });
+
+            sortTitleButton.addEventListener('click', () => {
+                sortTitleButton.classList.add('active');
+                sortAuthorButton.classList.remove('active');
+                updatePagination();
+            });
+
+            sortAuthorButton.addEventListener('click', () => {
+                sortAuthorButton.classList.add('active');
+                sortTitleButton.classList.remove('active');
+                updatePagination();
+            });
+
+            // Sign-up form validation
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                let isValid = true;
+                errorMessage.textContent = '';
+
+              
+                if (username.length < 3) {
+                    errorMessage.textContent += 'Username must be at least 3 characters long.\n';
+                    isValid = false;
+                }
+
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    errorMessage.textContent += 'Please enter a valid email address.\n';
+                    isValid = false;
+                }
+
+                if (password.length < 6) {
+                    errorMessage.textContent += 'Password must be at least 6 characters long.\n';
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    alert('Registration successful!');
+                    registerForm.reset();
+                }
+            });
+
+            updatePagination();
+        });
+    </script>
+</body>
+</html>
