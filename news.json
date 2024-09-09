@@ -1,0 +1,68 @@
+[
+    {
+        "id": "bbc-news",
+        "name": "BBC News",
+        "author": "Jane Smith",
+        "title": "Another Important Event",
+        "description": "Details about another important event happening around the world.",
+        "url": "https://www.bbc.com/news/world/2024/important-event",
+        "urlToImage": "https://cdn.bbc.com/news/images/important-event.jpg",
+        "publishedAt": "2024-09-08T10:20:00Z",
+        "content": "This is the full article content for the important event happening globally."
+    },
+    {
+        "id": "cnn-news",
+        "name": "CNN News",
+        "author": "John Doe",
+        "title": "Global Economy Update",
+        "description": "An update on the current global economic trends.",
+        "url": "https://www.cnn.com/news/world/2024/economy-update",
+        "urlToImage": "https://cdn.cnn.com/economy/images/global-economy.jpg",
+        "publishedAt": "2024-09-07T08:45:00Z",
+        "content": "Full article on the global economic trends and future predictions."
+    },
+    {
+        "id": "aljazeera-news",
+        "name": "Al Jazeera",
+        "author": "Fatima Ahmed",
+        "title": "Middle East Peace Talks",
+        "description": "Latest developments in peace talks in the Middle East.",
+        "url": "https://www.aljazeera.com/news/2024/peace-talks",
+        "urlToImage": "https://cdn.aljazeera.com/news/images/peace-talks.jpg",
+        "publishedAt": "2024-09-06T14:30:00Z",
+        "content": "In-depth coverage of the ongoing peace talks in the Middle East."
+    },
+    {
+        "id": "fox-news",
+        "name": "Fox News",
+        "author": "Michael Green",
+        "title": "US Elections 2024",
+        "description": "Updates on the US 2024 elections and key developments.",
+        "url": "https://www.foxnews.com/us/2024/elections",
+        "urlToImage": "https://cdn.foxnews.com/elections/images/us-elections.jpg",
+        "publishedAt": "2024-09-05T12:00:00Z",
+        "content": "Detailed report on the latest updates in the US 2024 elections."
+    },
+    {
+        "id": "nytimes-news",
+        "name": "The New York Times",
+        "author": "Anna Lee",
+        "title": "Climate Change Conference",
+        "description": "Key takeaways from the global climate change conference.",
+        "url": "https://www.nytimes.com/2024/climate-change-conference",
+        "urlToImage": "https://cdn.nytimes.com/climate/images/conference.jpg",
+        "publishedAt": "2024-09-04T09:15:00Z",
+        "content": "Comprehensive coverage of the global climate change conference."
+    },
+    {
+        "id": "reuters-news",
+        "name": "Reuters",
+        "author": "David Brown",
+        "title": "Tech Innovation Summit",
+        "description": "Highlights from the Tech Innovation Summit 2024.",
+        "url": "https://www.reuters.com/news/2024/tech-summit",
+        "urlToImage": "https://cdn.reuters.com/tech/images/innovation-summit.jpg",
+        "publishedAt": "2024-09-03T07:00:00Z",
+        "content": "A deep dive into the key innovations presented at the Tech Innovation Summit."
+    }
+]
